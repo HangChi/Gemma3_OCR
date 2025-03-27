@@ -22,7 +22,7 @@
 
 1. 克隆仓库：
 ```bash
-git clone https://github.com/你的用户名/Gemma3_OCR.git
+git clone https://github.com/HangChi/Gemma3_OCR.git
 cd Gemma3_OCR
 ```
 

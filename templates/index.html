@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemma-3 OCR</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-body p-5">
+                <h1 class="card-title text-center mb-4">
+                    <i class="fas fa-file-alt mr-2"></i>
+                    Gemma-3 OCR
+                </h1>
+                <p class="card-text text-center text-muted mb-4">上传图片，使用 Gemma-3 Vision 提取文字</p>
+                
+                <form action="{{ url_for('index') }}" method="post" enctype="multipart/form-data" class="text-center">
+                    <div class="form-group">
+                        <div class="upload-area p-4">
+                            <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                            <input type="file" name="image" accept="image/*" class="form-control-file" required onchange="previewImage(event)">
+                        </div>
+                    </div>
+                    <img id="imagePreview" src="#" alt="Image Preview" class="img-fluid mt-3" style="display: none; max-height: 300px;">
+                    <button type="submit" class="btn btn-primary btn-lg mt-4">
+                        <i class="fas fa-magic mr-2"></i>提取文字
+                    </button>
+                </form>
+
+                {% if error %}
+                    <div class="alert alert-danger mt-4" role="alert">
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        {{ error }}
+                    </div>
+                {% endif %}
+                
+                {% if extracted_text %}
+                    <div class="output mt-4">
+                        <h3 class="text-center mb-3">
+                            <i class="fas fa-file-alt mr-2"></i>提取结果
+                        </h3>
+                        <p class="text-center lead">{{ extracted_text }}</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var output = document.getElementById('imagePreview');
+                output.src = reader.result;
+                output.style.display = 'block';
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+</body>
+</html>
